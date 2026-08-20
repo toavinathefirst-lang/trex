@@ -2,17 +2,10 @@ export class AudioManager {
     constructor() {
         
         this.soundPaths = {
-            bgm: new URL('./assets/audio/marioTheme.mp3', import.meta.url).href,
-            jump: new URL('./assets/audio/mario_jump.mp3', import.meta.url).href,
-            gameOver: new URL('./assets/audio/mamma-mia_caQRETK.mp3', import.meta.url).href,
-            hit: new URL('./assets/audio/sm64-mario-pain.mp3', import.meta.url).href,
-            pipe: new URL('./assets/audio/pipe.mp3', import.meta.url).href,
-            fall: new URL('./assets/audio/mario-falling.mp3', import.meta.url).href,
-            coin: new URL('./assets/audio/super-mario-coin-sound.mp3', import.meta.url).href,
-            mushroom: new URL('./assets/audio/01-power-up-mario.mp3', import.meta.url).href,
-            stomp: new URL('./assets/audio/mario-goomba-stomp.mp3', import.meta.url).href,
-            win: new URL('./assets/audio/victory-mario-series-hq-super-smash-bros.mp3', import.meta.url).href,
-            restart: new URL('./assets/audio/sm64_mario_lets_go.mp3', import.meta.url).href,
+
+            jump: new URL('./assets/jump.wav', import.meta.url).href,
+            gameOver: new URL('./assets/explosion.wav', import.meta.url).href,
+            bgm: new URL('./assets/2022-03-08_-_Fire_-_www.FesliyanStudios.com.mp3', import.meta.url).href,
         };
 
         this.bgmAudio = null;
