@@ -1,4 +1,6 @@
+//voici le code avec le son ceci n est pas encore complet 
 import './style.css'
+import { audioManager } from './audioManager';
 
 document.addEventListener("DOMContentLoaded",()=>{
     const dino = document.querySelector(".dino")
@@ -6,16 +8,23 @@ document.addEventListener("DOMContentLoaded",()=>{
     let position =0
     const GRAVITY =0.9
     let isJumping = false;
+    let isGameOver=false;
+
+    if (!isGameOver) audioManager.playBGM()
 /**
  * @param {KeyboardEvent} e 
  */
     function control (e){
         if(e.code === "Space"){
-            jump()
+            if(!isJumping){
+                jump()
+            }
+            
         }
     }
     
       function jump(){
+        audioManager.playSFX("jump")
          isJumping = true
         let count = 0
         let timerId = setInterval(function() {
@@ -39,6 +48,10 @@ document.addEventListener("DOMContentLoaded",()=>{
             position = position * GRAVITY
             dino.style.bottom = position + 'px'
         }, 20)
+    }
+
+    function generateObstacles(){
+
     }
     document.addEventListener("keydown",control);
   

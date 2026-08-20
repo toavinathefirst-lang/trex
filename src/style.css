@@ -6,6 +6,79 @@
     }
 }
 
+@keyframes dayNightCycle {
+    0%   { background-color: #fdf6e3; }  /* matin doux */
+    20%  { background-color: #cfe8fc; }  /* plein jour */
+    40%  { background-color: #ffd8a8; }  /* coucher de soleil */
+    55%  { background-color: #12142e; }  /* crépuscule */
+    70%  { background-color: #04050f; }  /* nuit profonde */
+    85%  { background-color: #12142e; }  /* aube */
+    100% { background-color: #fdf6e3; }  /* retour au matin */
+}
+
+@keyframes starsFade {
+    0%, 45%   { opacity: 0; }
+    60%, 80%  { opacity: 1; }
+    95%, 100% { opacity: 0; }
+}
+
+@keyframes sunFade {
+    0%   { opacity: 1; transform: translate(0, 0); }
+    18%  { opacity: 1; transform: translate(10px, -10px); }
+    35%  { opacity: 0; transform: translate(20px, -20px); }
+    100% { opacity: 0; }
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    position: relative;
+    overflow: hidden;
+    animation: dayNightCycle 60s ease-in-out infinite;
+    transition: background-color 2s linear;
+}
+
+/* étoiles */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(2px 2px at 20% 30%, white, transparent),
+        radial-gradient(2px 2px at 60% 15%, white, transparent),
+        radial-gradient(1px 1px at 80% 40%, white, transparent),
+        radial-gradient(1px 1px at 35% 55%, white, transparent),
+        radial-gradient(2px 2px at 90% 20%, white, transparent),
+        radial-gradient(1px 1px at 10% 60%, white, transparent),
+        radial-gradient(1px 1px at 50% 10%, white, transparent),
+        radial-gradient(1px 1px at 70% 65%, white, transparent);
+    background-repeat: no-repeat;
+    opacity: 0;
+    animation: starsFade 60s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* soleil */
+body::after {
+    content: "";
+    position: absolute;
+    top: 8%;
+    right: 10%;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff6d5 0%, #ffe08a 60%, rgba(255,224,138,0) 75%);
+    box-shadow: 0 0 40px 10px rgba(255, 224, 138, 0.5);
+    animation: sunFade 60s ease-in-out infinite;
+    pointer-events: none;
+}
+
 #desert {
     position: absolute;
     background-image: url("./assets/t-rex-background.png");
@@ -13,6 +86,7 @@
     width: 100%;
     animation: slideright 600s infinite linear;
     bottom: 0;
+    z-index: 1;
 }
 
 .dino {
@@ -21,6 +95,7 @@
     width: 60px;
     position: absolute;
     bottom: 0;
+    z-index: 2;
 }
 
 .obstacle {
@@ -29,8 +104,5 @@
     height: 60px;
     position: absolute;
     bottom: 0;
-}
-
-body{
-    background-color: rgb(250, 250, 250);
+    z-index: 2;
 }
