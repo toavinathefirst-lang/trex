@@ -51,8 +51,17 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 
     function generateObstacles(){
+        let obstaclePosition =1000
+        const obstacle =document.createElement("div");
+        obstacle.className="obstacle"
+        grid.appendChild(obstacle)
+        obstacle.style.left = obstaclePosition + 'px'
 
+        let timerId = setInterval(function()){
+
+        }
     }
+    generateObstacles()
     document.addEventListener("keydown",control);
   
 
