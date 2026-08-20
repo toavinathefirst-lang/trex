@@ -6,14 +6,23 @@ document.addEventListener("DOMContentLoaded",()=>{
     const grid = document.querySelector(".grid");
     const alert = document.getElementById("alert")
     const desert = document.getElementById("desert")   
-    const body = document.body                          
+    const body = document.body    
+    const scoreDisplay = document.getElementById("score")                      
     let position =0
     const GRAVITY =0.9
     let isJumping = false;
+    let score = 0
+    let scoreTimerId = null   
     let isGameOver=false;
 
     if (!isGameOver) audioManager.playBGM()
 
+     function startScore() {                                  // <-- ajouté
+        scoreTimerId = setInterval(() => {
+            score++
+            scoreDisplay.textContent = score
+        }, 100)
+    }
     function control (e){
         if(e.code === "Space"){
             if(!isJumping){
@@ -61,6 +70,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                     audioManager.stopBGM()
                     audioManager.playSFX("gameOver")
                     clearInterval(timerId)
+                    clearInterval(scoreTimerId)               // <-- ajouté : arrête le score
                     alert.innerHTML = 'Game Over'
                     isGameOver = true
 
@@ -79,6 +89,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         }
     }
 
+    startScore()
     generateObstacles()
     document.addEventListener("keydown",control);
 });
