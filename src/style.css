@@ -106,3 +106,9 @@ body::after {
     bottom: 0;
     z-index: 2;
 }
+
+body.game-over,
+body.game-over::before,
+body.game-over::after {
+    animation-play-state: paused;
+}

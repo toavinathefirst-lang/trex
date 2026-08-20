@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
                     // pause des animations CSS
                     desert.style.animationPlayState = 'paused'
-                    body.style.animationPlayState = 'paused'
+                    body.classList.add('game-over')   // <-- remplace l'ancienne ligne
 
                     while (grid.firstChild) {
                         grid.removeChild(grid.lastChild)
