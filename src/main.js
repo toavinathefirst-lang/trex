@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     if (!isGameOver) audioManager.playBGM()
 
-     function startScore() {                                  // <-- ajouté
+     function startScore() {                                  
         scoreTimerId = setInterval(() => {
             score++
             scoreDisplay.textContent = score
