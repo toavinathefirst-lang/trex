@@ -1,6 +1,6 @@
 export class AudioManager {
     constructor() {
-        // URLs résolues dynamiquement par Vite
+        
         this.soundPaths = {
             bgm: new URL('./assets/audio/marioTheme.mp3', import.meta.url).href,
             jump: new URL('./assets/audio/mario_jump.mp3', import.meta.url).href,
@@ -10,21 +10,22 @@ export class AudioManager {
             fall: new URL('./assets/audio/mario-falling.mp3', import.meta.url).href,
             coin: new URL('./assets/audio/super-mario-coin-sound.mp3', import.meta.url).href,
             mushroom: new URL('./assets/audio/01-power-up-mario.mp3', import.meta.url).href,
-            stomp:new URL('./assets/audio/mario-goomba-stomp.mp3', import.meta.url).href,
-            win:new URL('./assets/audio/victory-mario-series-hq-super-smash-bros.mp3', import.meta.url).href,
-            restart:new URL('./assets/audio/sm64_mario_lets_go.mp3', import.meta.url).href,
-            
+            stomp: new URL('./assets/audio/mario-goomba-stomp.mp3', import.meta.url).href,
+            win: new URL('./assets/audio/victory-mario-series-hq-super-smash-bros.mp3', import.meta.url).href,
+            restart: new URL('./assets/audio/sm64_mario_lets_go.mp3', import.meta.url).href,
         };
 
         this.bgmAudio = null;
         this.isMuted = false;
         this.bgmStarted = false;
+        
+        // Cache pour réutiliser les objets Audio des effets sonores
+        this.sfxCache = {};
     }
 
     playBGM() {
         if (this.isMuted) return;
 
-        // Initialisation de la BGM si ce n'est pas encore fait
         if (!this.bgmAudio) {
             this.bgmAudio = new Audio(this.soundPaths.bgm);
             this.bgmAudio.loop = true;
@@ -34,11 +35,11 @@ export class AudioManager {
         this.bgmAudio.play().then(() => {
             this.bgmStarted = true;
         }).catch(() => {
-            // Déblocage sur premier clic ou touche en cas de blocage d'autoplay
             const unlockAudio = () => {
-                if (this.bgmAudio) {
-                    this.bgmAudio.play();
-                    this.bgmStarted = true;
+                if (this.bgmAudio && !this.bgmStarted) {
+                    this.bgmAudio.play().then(() => {
+                        this.bgmStarted = true;
+                    }).catch(() => {});
                 }
                 window.removeEventListener("keydown", unlockAudio);
                 window.removeEventListener("click", unlockAudio);
@@ -52,15 +53,29 @@ export class AudioManager {
         if (this.bgmAudio) {
             this.bgmAudio.pause();
             this.bgmAudio.currentTime = 0;
+            this.bgmStarted = false;
         }
     }
 
     playSFX(name, volume = 0.1) {
         if (this.isMuted || !this.soundPaths[name]) return;
 
-        const sfx = new Audio(this.soundPaths[name]);
+        // Réutilisation de l'objet audio existant ou création si premier appel
+        if (!this.sfxCache[name]) {
+            this.sfxCache[name] = new Audio(this.soundPaths[name]);
+        }
+
+        const sfx = this.sfxCache[name];
         sfx.volume = volume;
+        sfx.currentTime = 0; // Réinitialise la lecture au début si le son jouait déjà
         sfx.play().catch(err => console.warn(`Erreur lecture ${name}:`, err));
+    }
+
+    toggleMute() {
+        this.isMuted = !this.isMuted;
+        if (this.bgmAudio) {
+            this.bgmAudio.muted = this.isMuted;
+        }
     }
 }
 
